@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Calculator</title>
+	<script>
+	var num=0,result=0,numShow="0";
+	var operate=0; //判断输入状态
+	var calcul=0; //判断计算状态
+	var quit=0; //防止重复按键
+
+	function command(num){
+		var str=String(document.getElementById('numScreen').value);
+		str=(str!="0")?((operate==0)?str:""):"";
+		str=str+String(num);
+		document.getElementById('numScreen').value=str;
+		operate=0;
+		quit=0;
+	}
+	function dzero(){
+		var str=String(document.getElementById('numScreen').value);
+		str=(str!="0")?((operate==0)?str+"00":"0"):"0";
+		document.getElementById('numScreen').value=str;
+		operate=0;
+	}
+	function dot(){
+		var str=String(document.getElementById('numScreen').value);
+		str=(str!="0")?((operate==0)?str:"0"):"0";
+		for(i=0;i<=str.length;i++){
+			if(str.substr(i,1)==".") return false;
+		}
+		str=str+".";
+		document.getElementById('numScreen').value=str;
+		operate=0;
+	}
+	function del(){
+		var str=String(document.getElementById('numScreen').value);
+		str=(str!="0")?str:"";
+		str=str.substr(0,str.length-1);
+		str=(str!="")?str:"0";
+		document.getElementById('numScreen').value=str;
+	}
+	function clearscreen(){
+		document.getElementById('numScreen').value="0";
+		num=0;
+		numShow=0;
+		operate=0;
+		calcul=0;
+		quit=0;
+	}
+	
+	function plus(){
+		calculate();
+		operate=1;
+		calcul=1;
+	}
+	function minus(){
+		calculate();
+		operate=1;
+		calcul=2;
+	}
+	function times(){
+		calculate();
+		operate=1;
+		calcul=3;
+	}
+	function divide(){
+		calculate();
+		operate=1;
+		calcul=4;
+	}
+	function equal(){
+		calculate();
+		num=0;
+		numShow="0";
+		result=0;
+		operate=1;
+	}
+	function calculate(){
+		numShow=Number(document.getElementById('numScreen').value);
+		if(num!=0&&quit!=1){
+			switch(calcul){
+				case 1:result=num+numShow;break;
+				case 2:result=num-numShow;break;
+				case 3:result=num*numShow;break;
+				case 4:if(numShow!=0){result=num/numShow;}else{document.getElementById('note').innerHTML="被除数不能为零！";setTimeout(clearnote,4000)};break;
+			}quit=1;
+		}else{
+			result=numShow;
+		}
+		numShow=String(result);
+		document.getElementById('numScreen').value=numShow;
+		num=result;
+	}
+	function clearnote(){
+		document.getElementById('note').innerHTML="";
+	}
+	</script>
+	<style>
+		body{
+			-moz-user-select: none; /*火狐*/
+   			-webkit-user-select: none;  /*webkit浏览器*/
+   			-ms-user-select: none;   /*IE10*/
+   			-khtml-user-select: none; /*早期浏览器*/
+			user-select:none;
+			background: #a7d796;
+		}
+		.wrap{
+			width:290px;
+			height:355px;
+			margin:0 auto;
+			background:#f4f4f4;
+			padding-top: 5px;
+			border-radius:6px;
+			box-shadow: 0px 5px 0px #ededed;
+		}
+		.min_wrap{
+			width:280px;
+			height:350px;
+			margin:0 auto;
+			border:1px solid #f4f4f4;
+		}
+		#screen{
+			width:270px;
+			height:60px;
+			background: #1c1c1c;
+			margin:0 auto;
+			border-radius: 3px;
+			margin-top: 10px;
+		}
+		#buttons{
+			margin:0 auto;
+			width:269px;
+			height:220px;
+			margin-top: 20px;
+		}
+		#buttons .btn{
+			display: block;
+			width:55px;
+			height:30px;
+			float:left;
+			margin:5px;
+			border:1px solid #ededed;
+			border-radius: 3px;
+			background: #f4f4f4;
+			text-align: center;
+			line-height: 31px;
+		}
+		#buttons .btn:hover{
+
+			background: #ededed;
+		}
+		#buttons .equal{
+			height:72px;
+			float:right;
+		}
+		#note{
+			color:#a7d796;
+		}
+		#numScreen{
+			width: 260px;
+			height: 53px;
+			border: none;
+			color: #fff;
+			background: #000;
+			font-size: 20px;
+			margin-left: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="min_wrap">
+			<div id="screen">
+				<input type="text" id="numScreen" method="get" action="" class="screen" value="0" onfocus="this.blur();">
+			</div>
+			<div id="buttons">
+				<a class="btn" onclick="del()">&larr;</a>
+				<a class="btn" onclick="clearscreen()">C</a>
+				<a class="btn" onclick="plus()">&plus;</a>
+				<a class="btn" onclick="minus()">&minus;</a>
+				<a class="btn" onclick="command(1)">1</a>
+				<a class="btn" onclick="command(2)">2</a>
+				<a class="btn" onclick="command(3)">3</a>
+				<a class="btn" onclick="times()">&times;</a>
+				<a class="btn" onclick="command(4)">4</a>
+				<a class="btn" onclick="command(5)">5</a>
+				<a class="btn" onclick="command(6)">6</a>
+				<a class="btn" onclick="divide()">&divide;</a>
+				<a class="btn" onclick="command(7)">7</a>
+				<a class="btn" onclick="command(8)">8</a>
+				<a class="btn" onclick="command(9)">9</a>
+				<a class="btn equal" onclick="equal()">=</a>
+				<a class="btn" onclick="dzero()">00</a>
+				<a class="btn" onclick="command(0)">0</a>
+				<a class="btn" onclick="dot()">.</a>
+			</div>
+			<div id="note">
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>
